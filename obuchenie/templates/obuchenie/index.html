@@ -1,0 +1,44 @@
+{% extends 'obuchenie/base.html' %}
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    <table class="table table-hover">
+        <tr>
+            <th>фио</th>
+            <th>телефон</th>
+            <th>email</th>
+            <th>предоплата</th>
+            <th>инф. письмо</th>
+            <th>баланс</th>
+        </tr>
+
+        {% for uch in object_list %}
+
+        <tr onclick="window.location.href='{% url 'stroka' uch.pk %}'; return false">
+            <td>{{uch.ng_client}}</td>
+            <td>{{uch.ng_tel}}</td>
+            <td>{{uch.ng_email}}</td>
+            <td><input type="checkbox" {% if uch.ng_predpay %} checked {% endif %}"/></td>
+            <td><input type="checkbox" {% if uch.ng_pismo %} checked {% endif %}"/></td>
+            <td>{{uch.ng_balance}}</td>
+            <td><a href="{{ uch.get_absolute_url }}">edit</a></td>
+
+        </tr>
+
+        {% endfor %}
+    </table>
+
+    <form action="{% url 'add' %}" method="post">
+        {% csrf_token %}
+        <div>{{form.non_field_errors}}</div>
+        {% for f in form %}
+        <p><label for="{{f.id_for_label}}">{{f.label}}: </label>{{f}}</p>
+        <div class="form">{{f.errors}}</div>
+        {% endfor%}
+        <button type="submit">Добавить</button>
+    </form>
+
+{% endblock content %}

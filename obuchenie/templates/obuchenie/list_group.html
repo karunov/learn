@@ -1,0 +1,8 @@
+
+{% for g in groups %}
+    {% if g.pk == group_select %}
+        <button type="button" class="btn btn-dark btn-sm mb-1">{{ g.ng_groupname }} | {{g.ng_start }}</button>
+    {% else %}
+        <a href="{{ g.get_absolute_url }}" type="button" class="btn btn-secondary btn-sm mb-1">{{ g.ng_groupname }} | {{g.ng_start }}</a>
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,26 @@
+{% extends 'ng_learn/base.html' %}
+
+{% block content %}
+
+<ul>
+    <li>Количество групп:{{num_group}}</li>
+    <li>Количество студентов:{{num_student}}</li>
+</ul>
+<hr>
+
+
+
+{% for g in group_list %}
+
+<a href="{{g.get_absolute_url}}"> {{ g.groupname }}>>{{ g.groupstart }}</a>
+
+{%  endfor %}
+
+{% for s in object.student_set.all %}
+
+<a href=""> {{ s.name }}</a>
+
+{%  endfor %}
+
+
+{% endblock %}
