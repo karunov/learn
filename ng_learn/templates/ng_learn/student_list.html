@@ -1,0 +1,34 @@
+{% extends 'ng_learn/base.html' %}
+
+{% block content %}
+
+<ul>
+
+<table class="table table-hover">
+        <tr>
+            <th>фио</th>
+            <th>телефон</th>
+            <th>email</th>
+            <th>предоплата</th>
+            <th>инф. письмо</th>
+            <th>баланс</th>
+        </tr>
+
+        {% for student in object_list %}
+
+        <tr>
+            <td>{{student.name}}</td>
+            <td>{{student.tel}}</td>
+            <td>{{student.email}}</td>
+            <td><input type="checkbox" {% if student.predpay %} checked {% endif %}"/></td>
+            <td><input type="checkbox" {% if student.infomail %} checked {% endif %}"/></td>
+            <td>{{student.balance}}</td>
+            <td><a href="{{ student.get_absolute_url }}">edit</a></td>
+        </tr>
+
+        {% endfor %}
+</table>
+
+</ul>
+
+{% endblock %}

@@ -26,7 +26,7 @@ class student(models.Model):
     balance = models.IntegerField(null=True, help_text="оплачено", verbose_name="оплачено")
     predpay_summ = models.IntegerField(null=True, help_text="предоплата", verbose_name="предоплата")
     ng_comment = models.TextField(blank=True, null=True)
-    groupname = models.ForeignKey('group', on_delete=models.PROTECT, null=True)
+    groupname = models.ForeignKey('group', on_delete=models.PROTECT, related_name='students', null=True)
 
     def __str__(self):
         return self.name

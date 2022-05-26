@@ -3,24 +3,10 @@
 {% block content %}
 
 <ul>
-    <li>Количество групп:{{num_group}}</li>
-    <li>Количество студентов:{{num_student}}</li>
+    <li>Количество групп:{{object_list.count}}</li>
+    <li>Количество студентов:{{students.count}}</li>
 </ul>
 <hr>
-
-
-
-{% for g in group_list %}
-
-<a href="{{g.get_absolute_url}}"> {{ g.groupname }}>>{{ g.groupstart }}</a>
-
-{%  endfor %}
-
-{% for s in object.student_set.all %}
-
-<a href=""> {{ s.name }}</a>
-
-{%  endfor %}
 
 
 {% endblock %}

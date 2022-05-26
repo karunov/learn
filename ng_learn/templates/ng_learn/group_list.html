@@ -1,0 +1,22 @@
+{% extends 'ng_learn/base.html' %}
+
+{% block content %}
+
+<ul>
+
+{% for group in object_list %}
+
+<li><a href="{{group.get_absolute_url}}"> {{ group.groupname }}>>{{ group.groupstart }}</a></li>
+
+{%  endfor %}
+
+</ul>
+
+<form action="{% url 'add-group' %}" method="post">
+        {% csrf_token %}
+
+    {{ form.as_p }}
+    <input type="submit" value="+ group">
+</form>
+
+{% endblock %}

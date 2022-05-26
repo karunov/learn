@@ -1,45 +1,74 @@
-import generic as generic
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
-
 # Create your views here.
-from .models import *
+from django.template import RequestContext
 from django.urls import reverse_lazy
-from django.utils.timezone import now
+
+from .forms import AddStudentForm, AddGroupForm
+from .models import *
 from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import generic
 
 
 # Create your views here.
-class grouplist(ListView):
+class IndexPage(ListView):
     model = group
     template_name = 'ng_learn/index.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(IndexPage, self).get_context_data(**kwargs)
 
-# class groupdetail(ListView):
-#     model = student
-#     template_name = 'ng_learn/index.html'
-#
-#     def get_queryset(self):
-#         return student.objects.order_by(groupname=self.kwargs['pk'])
-
-class groupdetail(DetailView):
-    queryset = group.objects.all()
-    template_name = 'ng_learn/index.html'
-
-def index(request):
-    students = student.objects.all()
-    num_student = student.objects.all().count()
-    num_group = group.objects.all().count()
-    context = {
-
-        'students': students,
-        'num_student': num_student,
-        'num_group': num_group
-    }
-    return render(request, 'ng_learn/index.html', context)
+        context['students'] = student.objects.all()
+        return context
 
 
-def main(request):
-    return HttpResponse("Глaвнaя страница")
+class GroupDetail(DetailView):
+    model = group
+    template_name = 'ng_learn/group_detail.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(GroupDetail, self).get_context_data(**kwargs)
+
+        context['groups'] = group.objects.all()
+        return context
+
+
+class StudentDetail(DetailView):
+    model = student
+    template_name = 'ng_learn/student_detail.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(StudentDetail, self).get_context_data(**kwargs)
+
+        context['students'] = student.objects.all()
+        return context
+
+
+class GroupList(ListView):
+    model = group
+    template_name = 'ng_learn/group_list.html'
+
+
+class StudentList(ListView):
+    model = student
+    template_name = 'ng_learn/student_list.html'
+
+
+class AddStudent(CreateView):
+    form_class = AddStudentForm
+    template_name = 'ng_learn/add_student.html'
+
+    @property
+    def success_url(self):
+        return reverse('group-detail', args=(self.kwargs['pk'],))
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.instance.groupname_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+
+class AddGroup(CreateView):
+    form_class = AddGroupForm
+    template_name = 'ng_learn/add_group.html'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
