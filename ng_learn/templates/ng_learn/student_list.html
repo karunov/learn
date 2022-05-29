@@ -2,6 +2,10 @@
 
 {% block content %}
 
+<form action="{% url 'student-search' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
 <ul>
 
 <table class="table table-hover">
@@ -11,7 +15,9 @@
             <th>email</th>
             <th>предоплата</th>
             <th>инф. письмо</th>
-            <th>баланс</th>
+            <th>оплачено</th>
+            <th>осталось оплатить</th>
+            <th>группа</th>
         </tr>
 
         {% for student in object_list %}
@@ -20,10 +26,12 @@
             <td>{{student.name}}</td>
             <td>{{student.tel}}</td>
             <td>{{student.email}}</td>
-            <td><input type="checkbox" {% if student.predpay %} checked {% endif %}"/></td>
-            <td><input type="checkbox" {% if student.infomail %} checked {% endif %}"/></td>
+            <td><input type="checkbox" {% if student.predpay %} checked {% endif %}/></td>
+            <td><input type="checkbox" {% if student.infomail %} checked {% endif %}/></td>
             <td>{{student.balance}}</td>
-            <td><a href="{{ student.get_absolute_url }}">edit</a></td>
+            <td>{{ student.get_debt }}</td>
+            <td><a href="{% url 'group-detail' student.groupname_id %}">{{ student.groupname }}</a></td>
+            <td><a href="{{ student.get_absolute_url }}"><i>(i)</i></a></td>
         </tr>
 
         {% endfor %}

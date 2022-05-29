@@ -17,6 +17,8 @@ class group(models.Model):
         return reverse('group-detail', args=[str(self.id)])
 
 
+
+
 class student(models.Model):
     name = models.CharField(max_length=255, help_text="фио студента")
     tel = models.IntegerField(max_length=30, help_text="номер телефона", verbose_name="телефон")
@@ -33,3 +35,7 @@ class student(models.Model):
 
     def get_absolute_url(self):
         return reverse('student-detail', args=[str(self.id)])
+
+    def get_debt(self):
+        return self.groupname.price - self.balance
+

@@ -1,0 +1,15 @@
+
+{% extends 'ng_learn/base.html' %}
+
+
+{% block content %}
+
+<form action="" method="post">
+{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+<input type="submit" vаluе="Сохранить" />
+</form>
+
+{% endblock %}

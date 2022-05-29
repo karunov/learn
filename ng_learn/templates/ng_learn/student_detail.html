@@ -6,10 +6,21 @@
 {% block content %}
 
  <h1>{{ object.name }}</h1>
+<p>ФИо</p>
+<input type="text" value="{{ object.name  }} " disabled><br>
+<p>телефон</p>
+<input type="text" value="{{ object.tel  }} " disabled><br>
+<input type="text" value="{{ object.email  }} " disabled><br>
+<input type="checkbox" {% if student.predpay %} checked {% endif %} disabled/>
+<input type="checkbox" {% if student.infomail %} checked {% endif %} disabled/><br>
+<input type="text" value="{{ object.predpay_summ  }} " disabled><br>
+<input type="text" value="{{ object.balance  }} " disabled> <br>
+<input type="text" value="{{ object.ng_comment  }} " disabled> <br>
+<input type="text" value="{{ object.groupname  }} " disabled><br>
+<input type="text" value="{{ student.get_debt }}" disabled><br>
+<hr>
+<a href="/students/delete/{{ object.id }}">delete</a>
 
-<p>{{ object.tel }}</p>
-<p>{{ object.email }}</p>
-<p>{{ object.predpay }}</p>
-<p>{{ object.infomail }}</p>
-<p>{{ object.groupname_id }}</p>
+<a href="{% url 'update-student' student.pk %}">edit</a>
+
 {% endblock %}
