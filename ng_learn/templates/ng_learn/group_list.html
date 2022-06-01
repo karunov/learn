@@ -1,22 +1,32 @@
 {% extends 'ng_learn/base.html' %}
 
 {% block content %}
+<div class="container-fluid">
 
-<ul>
+
+
+    <div class="btn-group  mb-3" role="group" aria-label="Basic example">
+    <a href="{% url 'arh-group' %}"  class="btn btn-outline-secondary">Прошедшие группы</a>
+    <form action="{% url 'add-group' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        <input type="submit" class="btn btn-outline-dark" value="Создать группу">
+        </form>
+
+    </div>
+
+    <br>
+
 
 {% for group in object_list %}
 
-<li><a href="{{group.get_absolute_url}}"> {{ group.groupname }}>>{{ group.groupstart }}</a></li>
+<a href="{{group.get_absolute_url}}" class="btn btn-outline-success btn-sm mb-1"> {{ group.groupname }} | {{ group.groupstart }}</a>
 
 {%  endfor %}
 
-</ul>
 
-<form action="{% url 'add-group' %}" method="post">
-        {% csrf_token %}
 
-    {{ form.as_p }}
-    <input type="submit" value="+ group">
-</form>
 
+
+</div>
 {% endblock %}

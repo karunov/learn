@@ -4,23 +4,50 @@
 
 
 {% block content %}
+<div class="container-fluid">
 
- <h1>{{ object.name }}</h1>
-<p>ФИо</p>
-<input type="text" value="{{ object.name  }} " disabled><br>
-<p>телефон</p>
-<input type="text" value="{{ object.tel  }} " disabled><br>
-<input type="text" value="{{ object.email  }} " disabled><br>
-<input type="checkbox" {% if student.predpay %} checked {% endif %} disabled/>
-<input type="checkbox" {% if student.infomail %} checked {% endif %} disabled/><br>
-<input type="text" value="{{ object.predpay_summ  }} " disabled><br>
-<input type="text" value="{{ object.balance  }} " disabled> <br>
-<input type="text" value="{{ object.ng_comment  }} " disabled> <br>
-<input type="text" value="{{ object.groupname  }} " disabled><br>
-<input type="text" value="{{ student.get_debt }}" disabled><br>
-<hr>
-<a href="/students/delete/{{ object.id }}">delete</a>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">ФИ</span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.name  }} " disabled aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Отчество</span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.otche  }}" disabled aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Телефон</span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.tel }} " disabled>
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Email</span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.email }} " disabled aria-describedby="basic-addon1">
+</div>
+<div class="mb-2">
+Предоплата
+<input type="checkbox" {% if student.predpay %} checked {% endif %} disabled>
+Информационное письмо
+<input type="checkbox" {% if student.infomail %} checked {% endif %} disabled>
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Оплачено</span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.balance }} р." disabled aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1"><a class="text-white" href="{% url 'group-detail' student.groupname_id %}">Группа обучения</a></span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.groupname }} " disabled aria-describedby="basic-addon1">
+</div>
+<div class="input-group">
+  <span class="input-group-text">Заметки</span>
+  <textarea class="form-control" value="{{ object.ng_comment }} " disabled></textarea>
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Задолженность студента</span>
+  <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ student.get_debt }} р." disabled aria-describedby="basic-addon1">
+</div>
 
-<a href="{% url 'update-student' student.pk %}">edit</a>
+<a href="{% url 'update-student' student.pk %}" class="btn btn-outline-success mb-1">Редактировать</a>
+<a href="{% url 'docx-student' object.id %}" class="btn btn-outline-secondary mb-1">Открыть договор</a>
+<a href="/students/delete/{{ object.id }}" class="btn btn-outline-danger mb-1">Удалить студента</a>
 
+</div>
 {% endblock %}

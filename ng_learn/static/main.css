@@ -1,0 +1,32 @@
+a {
+    color: rgb(91,102,107);
+}
+
+a:hover {
+    color: rgb(67,74,76);
+}
+
+.input-group-text {
+background-color:rgb(91,102,107);
+color: white;
+}
+
+
+@media (min-width: 375px) and (max-width: 800px) {
+
+.table>tbody {
+vertical-align: middle;
+font-size: .9em;
+}
+
+th>i {
+
+  font-size: 1.2em;
+}
+
+th {
+  color: rgb(91,102,107);
+
+}
+
+}

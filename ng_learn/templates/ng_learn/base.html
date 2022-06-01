@@ -1,19 +1,27 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-utilities.min.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
 <body>
-<a href="{% url 'index' %}">Главная</a>
-<a href="{% url 'groups' %}">Группы</a>
-<a href="{% url 'students' %}">Студенты</a>
+<div class="container mb-3 text-center">
+    <a href="{% url 'index' %}"><i class="fa fa-home fa-4x "></i></a>
+    <a href="{% url 'groups' %}"><i class="fa fa-graduation-cap fa-4x"></i></a>
+    <a href="{% url 'students' %}"><i class="fa fa-users fa-4x"></i></a>
+</div>
 <hr>
 {% block content %}
 
 
 {% endblock %}
 
-
+<script src="{% static 'bootstrap.min.js' %}"></script>
 </body>
+
 </html>

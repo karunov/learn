@@ -1,12 +1,16 @@
 {% extends 'ng_learn/base.html' %}
 
 {% block content %}
+<div class="container text-center">
 
-<ul>
-    <li>Количество групп:{{object_list.count}}</li>
-    <li>Количество студентов:{{students.count}}</li>
-</ul>
-<hr>
+    <button type="button" class="btn btn-secondary btn-sm">
+        Количество групп <span class="badge bg-dark">{{object_list.count}}</span>
+    </button>
 
+    <button type="button" class="btn btn-secondary btn-sm">
+        Количество студентов <span class="badge bg-dark">{{students.count}}</span>
+    </button>
+
+</div>
 
 {% endblock %}

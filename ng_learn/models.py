@@ -20,8 +20,9 @@ class group(models.Model):
 
 
 class student(models.Model):
-    name = models.CharField(max_length=255, help_text="фио студента")
-    tel = models.IntegerField(max_length=30, help_text="номер телефона", verbose_name="телефон")
+    name = models.CharField(max_length=255,  help_text="фио студента")
+    otche = models.CharField(max_length=255, null=True, help_text="отчество")
+    tel = models.IntegerField(help_text="номер телефона", verbose_name="телефон")
     email = models.CharField(max_length=50, null=True, help_text="эл. почта")
     predpay = models.BooleanField(default=False, null=True, help_text="предоплата", verbose_name="предоплата")
     infomail = models.BooleanField(default=False, null=True, help_text="инф. письмо", verbose_name="инф. письмо")
@@ -37,5 +38,9 @@ class student(models.Model):
         return reverse('student-detail', args=[str(self.id)])
 
     def get_debt(self):
-        return self.groupname.price - self.balance
+        if self.groupname_id is None:
+            return 0
+        else:
+            return self.groupname.price - self.balance
+
 

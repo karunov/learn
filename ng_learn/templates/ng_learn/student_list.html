@@ -1,15 +1,14 @@
 {% extends 'ng_learn/base.html' %}
 
 {% block content %}
-
+<div class="container-fluid">
 <form action="{% url 'student-search' %}" method="get">
   <input name="q" type="text" placeholder="Search...">
 </form>
-
-<ul>
-
-<table class="table table-hover">
-        <tr>
+</div>
+<div class="container-fluid">
+<table class="table table-hover table-sm">
+        <tr class="text-center">
             <th>фио</th>
             <th>телефон</th>
             <th>email</th>
@@ -23,20 +22,20 @@
         {% for student in object_list %}
 
         <tr>
-            <td>{{student.name}}</td>
-            <td>{{student.tel}}</td>
-            <td>{{student.email}}</td>
+            <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.name}}</td>
+            <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.tel}}</td>
+            <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.email}}</td>
             <td><input type="checkbox" {% if student.predpay %} checked {% endif %}/></td>
             <td><input type="checkbox" {% if student.infomail %} checked {% endif %}/></td>
             <td>{{student.balance}}</td>
             <td>{{ student.get_debt }}</td>
+            {% if student.groupname is not None %}
             <td><a href="{% url 'group-detail' student.groupname_id %}">{{ student.groupname }}</a></td>
-            <td><a href="{{ student.get_absolute_url }}"><i>(i)</i></a></td>
+            {% endif %}
         </tr>
 
         {% endfor %}
 </table>
-
-</ul>
+</div>
 
 {% endblock %}

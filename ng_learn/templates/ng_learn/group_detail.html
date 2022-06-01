@@ -2,55 +2,94 @@
 
 
 {% block content %}
-{% for group in groups|dictsort:"groupstart" %}
-<li><a href="{{group.get_absolute_url}}"> {{ group.groupname }}>>{{ group.groupstart }}</a></li>
-{% endfor  %}
-<br>
+<div class="container-fluid mb-3">
+    {% for group in groups|dictsort:"groupstart" %}
+    <a href="{{group.get_absolute_url}}" class="btn btn-outline-success btn-sm mb-1">
+        {{ group.groupname }} | {{ group.groupstart }}
+    </a>
+    {% endfor %}
+    <br>
 
 
-Название: {{ object.groupname }}
-<br>
-Начало: {{ object.groupstart }}
-<br>
-Цена: {{ object.price }}
-<br>
-задолженность группы {{ count }}
-<br>
+    <div class="card bg-light mt-3">
+        <div class="card-body">
+            <p class="card-title">{{ object.groupname }}:
+                <span class="card-subtitle mb-2 text-muted ">старт {{ object.groupstart }}</span>
+            </p>
+            <p class="card-text">Стоимость курса: {{ object.price }} р. <br> Задолженность группы: {{ count }} р.</p>
+            <form action="{% url 'delete-group' group.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="card-link btn btn-outline-secondary btn-sm mb-2" value="Удалить группу"/>
+            </form>
+            <form action="{% url 'add-student' object.id %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="card-link btn btn-outline-success btn-sm" value="Добавить студента">
+            </form>
+        </div>
+    </div>
 
-ID: {{ object.id }}
 
-<form action="{% url 'delete-group' group.pk %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="delete"/>
-</form>
-
-<h1>Список студентов:</h1>
-<table class="table table-hover">
-    <tr>
-        <th>фио</th>
-        <th>телефон</th>
-        <th>email</th>
-        <th>предоплата</th>
-        <th>инф. письмо</th>
-        <th>баланс</th>
-        <th>осталось оплатить</th>
+</div>
+<div class="container-fluid">
+<table class="table table-hover d-none d-md-block">
+    <tr class="text-center">
+        <th>Фио</th>
+        <th>Телефон</th>
+        <th >Email</th>
+        <th><i class="fa fa-credit-card" aria-hidden="true"></i></th>
+        <th><i class="fa fa-envelope" aria-hidden="true"></i></th>
+        <th >Оплачено</th>
+        <th>Задолженность</th>
     </tr>
 
     {% for student in object.students.all %}
 
-    <tr>
-        <td>{{student.name}}</td>
-        <td>{{student.tel}}</td>
-        <td>{{student.email}}</td>
+    <tr class="text-center" >
+        <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.name}}</td>
+        <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.tel}}</td>
+        <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.email}}</td>
         <td><input type="checkbox" {% if student.predpay %} checked {% endif %}/></td>
         <td><input type="checkbox" {% if student.infomail %} checked {% endif %}/></td>
-        <td>{{student.balance}}</td>
+        <td >{{student.balance}}</td>
         <td>{{ student.get_debt }}</td>
-        <td><a href="{{ student.get_absolute_url }}">edit</a></td>
+<!--        <td><a href="{{ student.get_absolute_url }}"><i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i></a></td>-->
         <td>
             <form action="{% url 'delete-student' student.pk %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="delete"/>
+                <input type="submit" class="btn btn-outline-danger btn-sm" value="X"/>
+            </form>
+        </td>
+
+    </tr>
+
+
+    {% endfor %}
+</table>
+</div>
+<div class="container-fluid">
+<table class="table table-sm d-md-none bg-light">
+    <tr class="text-center">
+        <th class="bg-secondary text-white">ФИО</th>
+        <th class="bg-secondary text-white">ТЕЛ</th>
+        <th class="bg-secondary text-white"><i class="fa fa-credit-card" aria-hidden="true"></i></th>
+        <th class="bg-secondary text-white"><i class="fa fa-envelope" aria-hidden="true"></i></th>
+        <th class="bg-secondary text-white"></th>
+    </tr>
+
+    {% for student in object.students.all %}
+
+        <tr class="text-center" >
+        <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.name}}</td>
+        <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.tel}}</td>
+        <td><input type="checkbox" {% if student.predpay %} checked {% endif %}/></td>
+        <td><input type="checkbox" {% if student.infomail %} checked {% endif %}/></td>
+
+<!--        <td><a href="{{ student.get_absolute_url }}"><i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i></a></td>-->
+        <td>
+            <form action="{% url 'delete-student' student.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-outline-danger btn-sm" value="X"/>
             </form>
         </td>
     </tr>
@@ -59,14 +98,5 @@ ID: {{ object.id }}
     {% endfor %}
 </table>
 
-<hr>
-
-<form action="{% url 'add-student' object.id %}" method="post">
-    {% csrf_token %}
-
-    {{ form.as_p }}
-    <input type="submit" value="+ student">
-</form>
-
-
+</div>
 {% endblock %}
