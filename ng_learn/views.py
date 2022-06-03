@@ -1,15 +1,14 @@
 # Create your views here.
 import io
 
-from django.conf.global_settings import MEDIA_ROOT
 from django.conf import settings
 from django.db.models import F, Sum, Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 
-from .forms import AddStudentForm, AddGroupForm
+from .forms import AddStudentForm, AddGroupForm, StudentModelForm
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from docxtpl import DocxTemplate
@@ -71,8 +70,10 @@ class StudentDetail(DetailView):
 
 
 class StudentUpdate(UpdateView):
+    form_class = StudentModelForm
     model = student
-    fields = '__all__'
+    template_name = 'ng_learn/student_edit.html'
+
 
     @property
     def success_url(self):
@@ -83,11 +84,26 @@ def StudentDocx(request, pk):
     docpath = settings.BASE_DIR / 'ng_learn/templates/ng_learn/template_doc.docx'
 
     doc = DocxTemplate(docpath)
+    #now = timezone.now()
+    stud_contract = student.objects.get(pk=pk)
+    contract_date = stud_contract.groupname.groupstart
+    ps_sn = stud_contract.psprt_sn
+    ps_date = stud_contract.psprt_date
+    ps_issue = stud_contract.psprt_issue
+    otch = stud_contract.otche
+    tel = stud_contract.tel
+    name = stud_contract.name
 
-    name = student.objects.get(pk=pk)
-    print(name.tel)
+    print(contract_date)
 
-    context = {'name': name}
+    context = {'name': name,
+               'contract_date': contract_date,
+               'ps_sn': ps_sn,
+               'ps_date': ps_date,
+               'ps_issue': ps_issue,
+               'otch': otch,
+               'tel': tel
+               }
     doc.render(context)
 
     file_stream = io.BytesIO()
@@ -125,7 +141,8 @@ class ArhiveGroupList(ListView):
 class StudentList(ListView):
     model = student
     template_name = 'ng_learn/student_list.html'
-    ordering = 'groupname__groupstart'
+    # ordering = 'groupname__groupstart'
+    ordering = 'name'
 
 
 class StudentSearch(ListView):
@@ -159,21 +176,34 @@ class DeleteStudent(DeleteView):
 
     @property
     def success_url(self):
-        return reverse('group-detail', args=(self.object.groupname_id,))
+        if self.object.groupname is not None:
+            return reverse('students')
+            # return reverse('group-detail', args=(self.object.groupname_id,))
+        else:
+            return reverse('students')
 
 
-class DeleteStudentFromGroup(DeleteView):
-    success_url = None
+def DelFromGroup(request, groupname_id, pk):
+    delstudent = get_object_or_404(student, pk=pk, groupname_id=groupname_id)
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        success_url = self.get_success_url()
-        self.object.groupname = None
-        self.object.save()
-        return HttpResponseRedirect(success_url)
+    if request.method == "POST":
+        delstudent.groupname = None
+        delstudent.save()
+        return redirect('group-detail', pk=groupname_id)
 
-    def post(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
+
+# class DeleteStudentFromGroup(DeleteView):
+#     success_url = None
+#
+#     def delete(self, request, *args, **kwargs):
+#         self.object.groupname = self.get_object()
+#         success_url = self.get_success_url()
+#         self.object.groupname = None
+#         self.object.save()
+#         return HttpResponseRedirect(success_url)
+#
+#     def post(self, request, *args, **kwargs):
+#         return self.delete(request, *args, **kwargs)
 
 
 class AddGroup(CreateView):

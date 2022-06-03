@@ -12,6 +12,8 @@ color: white;
 }
 
 
+
+
 @media (min-width: 375px) and (max-width: 800px) {
 
 .table>tbody {
@@ -28,5 +30,15 @@ th {
   color: rgb(91,102,107);
 
 }
+
+input {
+width: 100%;
+}
+
+.input-group-text {
+width: 100%;
+}
+
+
 
 }

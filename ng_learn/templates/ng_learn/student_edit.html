@@ -1,0 +1,22 @@
+
+   
+{% extends 'ng_learn/base.html' %}
+
+
+{% block content %}
+
+
+<form action="" method="post">
+        {% csrf_token %}
+        <div>{{form.non_field_errors}}</div>
+        {% for f in form %}
+        <div class="input-group mb-1">
+                <span class="input-group-text" id="basic-addon1">{{f.label}}:</span>
+        {{f}}
+        </div>
+        <div class="form">{{f.errors}}</div>
+        {% endfor%}
+        <button type="submit">Сохранить</button>
+</form>
+
+{% endblock %}

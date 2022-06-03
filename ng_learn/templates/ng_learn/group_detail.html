@@ -55,12 +55,14 @@
         <td>{{ student.get_debt }}</td>
 <!--        <td><a href="{{ student.get_absolute_url }}"><i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i></a></td>-->
         <td>
-            <form action="{% url 'delete-student' student.pk %}" method="post">
+
+        </td>
+        <td>
+            <form action="{% url 'del-from-group' student.groupname_id student.pk %}" method="post">
                 {% csrf_token %}
-                <input type="submit" class="btn btn-outline-danger btn-sm" value="X"/>
+                <input type="submit" class="btn btn-outline-warning btn-sm" value="Х"/>
             </form>
         </td>
-
     </tr>
 
 
@@ -84,12 +86,10 @@
         <td onclick="window.location.href='{{ student.get_absolute_url }}'; return false">{{student.tel}}</td>
         <td><input type="checkbox" {% if student.predpay %} checked {% endif %}/></td>
         <td><input type="checkbox" {% if student.infomail %} checked {% endif %}/></td>
-
-<!--        <td><a href="{{ student.get_absolute_url }}"><i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i></a></td>-->
         <td>
-            <form action="{% url 'delete-student' student.pk %}" method="post">
+            <form action="{% url 'del-from-group' student.groupname_id student.pk %}" method="post">
                 {% csrf_token %}
-                <input type="submit" class="btn btn-outline-danger btn-sm" value="X"/>
+                <input type="submit" class="btn btn-outline-warning btn-sm" value="Х"/>
             </form>
         </td>
     </tr>

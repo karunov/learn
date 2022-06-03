@@ -7,19 +7,19 @@
 <div class="container-fluid">
 
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">ФИ</span>
+  <span class="input-group-text" >ФИ</span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.name  }} " disabled aria-describedby="basic-addon1">
 </div>
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">Отчество</span>
+  <span class="input-group-text" >Отчество</span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.otche  }}" disabled aria-describedby="basic-addon1">
 </div>
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">Телефон</span>
+  <span class="input-group-text" >Телефон</span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.tel }} " disabled>
 </div>
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">Email</span>
+  <span class="input-group-text" >Email</span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.email }} " disabled aria-describedby="basic-addon1">
 </div>
 <div class="mb-2">
@@ -29,25 +29,45 @@
 <input type="checkbox" {% if student.infomail %} checked {% endif %} disabled>
 </div>
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">Оплачено</span>
+  <span class="input-group-text" >Оплачено</span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.balance }} р." disabled aria-describedby="basic-addon1">
 </div>
+  {% if student.groupname is not None %}
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1"><a class="text-white" href="{% url 'group-detail' student.groupname_id %}">Группа обучения</a></span>
+  <span class="input-group-text" ><a class="text-white" href="{% url 'group-detail' student.groupname_id %}">В группе</a></span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ object.groupname }} " disabled aria-describedby="basic-addon1">
 </div>
+  {% endif %}
 <div class="input-group">
   <span class="input-group-text">Заметки</span>
-  <textarea class="form-control" value="{{ object.ng_comment }} " disabled></textarea>
+  <textarea class="form-control" disabled>{{ object.ng_comment }}</textarea>
 </div>
 <div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">Задолженность студента</span>
+  <span class="input-group-text" >Задолженность студента</span>
   <input type="text" class="form-control" aria-label="Имя пользователя" value="{{ student.get_debt }} р." disabled aria-describedby="basic-addon1">
 </div>
 
-<a href="{% url 'update-student' student.pk %}" class="btn btn-outline-success mb-1">Редактировать</a>
-<a href="{% url 'docx-student' object.id %}" class="btn btn-outline-secondary mb-1">Открыть договор</a>
-<a href="/students/delete/{{ object.id }}" class="btn btn-outline-danger mb-1">Удалить студента</a>
+
+  <table>
+    <tr>
+      <td>
+        <a href="{% url 'docx-student' object.id %}" class="btn btn-outline-secondary mb-1">Открыть договор</a>
+      </td>
+      <td>
+        <a href="{% url 'update-student' student.pk %}" class="btn btn-outline-success mb-1">Редактировать</a>
+      </td>
+
+      <td>
+        <form action="{% url 'delete-student' student.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-outline-danger mb-1" value="X"/>
+            </form>
+      </td>
+    </tr>
+  </table>
+
+
+<!--<a href="/students/delete/{{ object.id }}" class="btn btn-outline-danger mb-1">Удалить студента</a>-->
 
 </div>
 {% endblock %}
