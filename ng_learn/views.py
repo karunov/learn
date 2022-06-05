@@ -2,6 +2,7 @@
 import io
 
 from django.conf import settings
+from django.core.mail import send_mail
 from django.db.models import F, Sum, Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -217,3 +218,12 @@ class AddGroup(CreateView):
 class DeleteGroup(DeleteView):
     model = group
     success_url = reverse_lazy('groups')
+
+
+send_mail(
+    'Subject here',
+    'Here is the message.',
+    'tager3@mail.ru',
+    ['karunov@list.ru'],
+    fail_silently=False,
+)
